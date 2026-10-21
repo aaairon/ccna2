@@ -1,0 +1,163 @@
+Version: 2.0   10-14-2026
+---------------
+Login: root
+Pass: C1sc0123
+
+Get IP:
+rm -rf /etc/udev/rules.d/70-persistent-net.rules
+reboot
+
+Set NetAdapters:
+NetAdapter 1: NAT (208.8.8.0/24)
+NetAdapter 2: VMNet15 (10.255.10.0/24)
+NetAdapter 3: VMNet16 (10.69.255.0/29)
+NetAdapter 4: VMNet17 (10.69.255.8/29)
+
+!@cmd
+route add 172.16.29.0 mask 255.255.255.0 10.69.255.6
+
+
+ config t
+ router eigrp 100
+  no auto-summary
+  network 10.1.4.4 0.0.0.3
+  network 10.2.1.0 0.0.0.255
+  network 10.2.2.0 0.0.0.255
+  network 192.168.1.128 0.0.0.31
+end
+
+
+COREBABA
+conf t
+int lo10
+ip add 192.168.71.71 255.255.255.255
+ip ospf 1 area 71
+end
+
+
+COREBABA
+
+conf t
+router eigrp 100
+no network 192.168.0.0       0.0.255.255
+network 192.168.71.0       0.0.0.255
+router ospf 1
+redistribute eigrp 100 subnets metric 2
+end
+
+
+
+DR
+MANAGEMENT THE IPAPADALA SA ARE 
+
+type 4 kailangan muna dumaan dito bago makapunta to
+another destination 
+
+
+
+galing sa labas papasok type-5 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+0 = INTRAAREA
+OIA = interAREA
+
+
+#####################
+BGP
+
+
+Autonomous SYSTEM Number 
+ 
+
+!@I2 - PLDT
+config t
+ router bgp __
+ bgp log-neighbor-changes
+ neighbor 24.2.4.4   remote-as 45
+ neighbor 25.2.5.5   remote-as 45
+ neighbor 207.7.7.1  remote-as 1
+ neighbor 32.3.2.3   remote-as 3
+ address-family __
+  neighbor 24.2.4.4   activate
+  neighbor 25.2.5.5   activate
+  neighbor 32.3.2.3   activate
+  neighbor 207.7.7.1  activate
+  network 22.22.22.22 mask 255.255.255.255
+  network 207.7.7.0 mask 255.255.255.0
+  network 24.2.4.0  mask 255.255.255.0
+  network 25.2.5.0  mask 255.255.255.0
+  network 32.3.2.0  mask 255.255.255.0
+  end
+
+
+
+
+
+Transalation of Private to public
+
+
+!@R1
+conf t
+ ip nat inside source static 10.1.1.2 208.8.8.10 
+ ip nat inside source static 10.1.1.6 208.8.8.20
+ ip nat inside source static 10.1.1.10 208.8.8.30
+ end
+show ip nat translations
+!@R1
+conf t
+ ip nat inside source static 10.1.4.6 208.8.8.100 
+ ip nat inside source static 10.1.4.10 207.7.7.100
+ end
+show ip nat translations
+
+
+
+
+
+
+
+
+conf t
+ int range e1/0-1
+  ip nat outside
+  exit
+ int e1/2
+  ip nat inside
+  end
+
+R4
+
+conf t
+ ip nat inside source static 192.168.1.133 209.9.9.201
+ ip nat inside source static 10.2.2.133    209.9.9.202
+ ip nat inside source static 10.2.1.101    207.7.7.201
+ip nat inside source static  10.2.1.102    207.7.7.201
+ end
+show ip nat translations
+
+
+
+
+
+
+
+
+
+
+
+
+
+

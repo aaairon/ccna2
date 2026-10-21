@@ -1,0 +1,259 @@
+routing table 
+
+CTRL + SHIFT = 6 to stop finding route
+
+C = 0 "CONNECTED"
+L = 
+
+set Route 
+set no ip route 0.0.0.0 0.0.0.0 192.168.1.129 1 (disable) sasapuhin ng 130
+ip show route static (assigned manually)
+
+************ FLOATING STATIT ROUTE***********************
+conf t
+ ip route 0.0.0.0 0.0.0.0 192.168.1.129 1
+ ip route 0.0.0.0 0.0.0.0 192.168.1.130 10
+ end
+
+
+
+
+
+
+conf t
+ ip route 0.0.0.0 0.0.0.0 10.1.4.10 1
+ ip route 0.0.0.0 0.0.0.0 10.1.4.6 10
+ end
+
+
+
+
+knowing rim 
+
+contant designated route
+
+how to forward packet
+
+CRT
+1. show ip route 
+
+
+WINDOWS
+1. route print  / netstat -r
+
+
+Linux
+1. Netstat -r 
+2. ping (ctrl + c to STOP pinging)
+
+
+
+
+
+***set app address to PCS***
+conf t
+ int e0/0
+  no shut
+  ip add 10.2.1.101 255.255.255.0
+  end
+show ip int brief | ex una
+
+
+
+***set app address to SERVERS***
+
+ int e1/0
+  ip add 192.168.1.133 255.255.255.224
+  no shut
+  end
+show ip int brief | ex una
+
+
+***set app address to SWITCHES***
+conf t
+ int e1/0
+  switchport mode access
+  switchport access vlan 100
+  end
+show vlan brief
+
+
+## PATH Selection Process
+LONGEST pREFIX MATCH
+CiDR (prefix)
+
+
+
+
+Dadaan sa VLAN na sa destination 
+p1
+conf t
+ ip route 192.168.1.130 255.255.255.255 10.2.1.2
+ end
+
+
+p2
+
+Rekta 
+conf t
+ ip route 192.168.1.128 255.255.255.224 10.2.1.2
+ ip route 192.168.1.129 255.255.255.255 10.2.1.1
+ end
+
+
+
+
+
+
+
+
+
+
+
+
+### EIGRP
+1. Step 
+10.2.1.0
+10.2.2.0
+192.168.1.128
+10.1.4.4
+
+!@C1
+!@open EIGRP 
+conf t 
+router eigrp 100
+ network 10.2.1.0	  0.0.0.255
+ network 10.2.2.0	  0.0.0.255
+ network 192.168.1.128	  0.0.0.31
+ network 10.1.4.4	  0.0.0.3
+
+
+IGP
+-DISTANCE VECTOR
+	-EIGRP
+	-RIP
+-lINK State
+	-OSPF
+	-IS-IS
+
+EGP
+-PATH VECTOR
+-BGP
+
+
+
+5 types Hello Messages of EIGRP
+1. Hello (Kung buhay yung kabila) 
+2. Query 
+3. Updates 
+4. Reply 
+5. Hello (Acknowledge)
+
+
+
+
+
+r4
+conf t 
+ router eigrp 100
+ variance 10
+ end
+
+
+
+
+
+!@R2
+conf t
+ router ospf 1
+  router-id 2.2.2.2
+  network 2.2.2.2 0.0.0.0 area 0
+  network 10.1.1.4 0.0.0.3 area 0
+  network 10.1.1.0 0.0.0.3 area 12
+  end
+~~~
+
+
+
+
+
+
+
+OSPF commanding 
+r4,r3
+
+conf t 
+key chain CCNA
+key 1 
+key-string pass
+crypto md5
+!
+int e1/2
+ip ospf authentication key CCNA
+
+
+
+change ospf (broadcast to point to point )
+conf t 
+int e1/2 
+ip ospf network point-to-point
+
+
+
+##### SEED METRICS FOR REDISTRIBUTION
+1. EIGRP  -INFINITY
+2. RIP	  -INFINITY
+3. OSPF   -20 Cost 
+4. ISIS   -0
+5. BGP    -Based on the IGBP
+
+
+
+## Path Selection Process 
+1. Longest Distance 
+2. Admin Distance (lowest admin distance to highest distance)
+3. metrix 
+
+C = 0
+S = 1
+O = 110
+D = 90
+D = 170
+R = 120
+L1 = 115
+
+S 
+D
+R
+O
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
